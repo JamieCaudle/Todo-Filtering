@@ -1,8 +1,11 @@
 // Fetch Data  -- maybe when page loads
 // store data in variable
-// HTML add input to take a number from 1 to 10
-//add button that filters to do by input number (above) populate to do list by userID todos
-let arrayOfTodos = [
+// HTML:
+//  add input to take a number from 1 to 10
+//add button, that filters to do by ^input number
+// populate to do list by userID todos
+
+let todoData = [
   {
     userId: 1,
     id: 1,
@@ -1217,20 +1220,45 @@ let arrayOfTodos = [
 const fetchTodos = () => {
   fetch("https://jsonplaceholder.typicode.com/todos")
     .then((response) => response.json())
-    .then((json) => (arrayOfTodos = json));
+    .then((json) => (todoData = json));
+};
+
+let selectedTodos = (element) => {
+  let filteredToDoData = null;
+  filteredToDoData = todoData.filter((todo) => {
+    return todo.userId === parseInt(element.value);
+  });
+  populateTodos(filteredToDoData);
 };
 
 let orderedList = document.querySelector("ol");
 
-const populateTodos = () => {
-  for (let i = 0; i < arrayOfTodos.length; i++) {
-    const element = arrayOfTodos[i];
+const populateTodos = (filteredToDoData) => {
+  for (let i = 0; i < filteredToDoData.length; i++) {
+    const toDoItem = filteredToDoData[i];
+
+
+  orderedList.removeChild(orderedList.childNodes);
+
 
     let newLi = document.createElement("li");
 
-    newLi.innerText = element.title;
+    newLi.innerText = toDoItem.title;
 
-    orderedList.appendChild(newLi);
+
+  
+    if (toDoItem.completed === false) {
+      // newLi.style.color = "red";
+      newLi.innerText = "🚫 " + newLi.innerText
+      orderedList.appendChild(newLi);
+    } else  {
+      orderedList.appendChild(newLi);
+      newLi.innerText = "✅ " + newLi.innerText
+    }
+  }
+};
+
+
 
     // Another way to do it below
 
@@ -1238,9 +1266,3 @@ const populateTodos = () => {
     // let newtext = document.createTextNode(arrayOfTodos[i].title);
     // newLi.appendChild(newtext);
     // document.getElementById("todoList").appendChild(newLi);
-
-    if (element.completed === false) {
-      document.querySelector("li").style.color = "red";
-    }
-  }
-};

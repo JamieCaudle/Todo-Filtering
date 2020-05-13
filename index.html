@@ -8,8 +8,18 @@
 <body>
   <button onclick="fetchTodos()">Fetch Todos</button>
   <button onclick="populateTodos()">Populate Todos</button>
+ 
+  <label for="numberSelect">Select Number 1-10:</label>
+
+  <input onchange="selectedTodos(this)" type="number" id="numberSelect" name="numberSelect"
+  min="1" max="10" value="0">
+
   <ol id="todoList">
   </ol>
+
+
+
+
   <script src="./app.js"></script>
 </body>
 </html>
